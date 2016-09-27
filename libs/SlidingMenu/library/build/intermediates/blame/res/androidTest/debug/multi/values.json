@@ -22,29 +22,5 @@
                 }
             }
         ]
-    },
-    {
-        "outputFile": "C:\\Users\\omerrom\\AndroidStudioProjects\\Portabelo_dir\\Portabelo_New\\libs\\SlidingMenu\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\values\\values.xml",
-        "map": [
-            {
-                "to": {
-                    "startLine": 3,
-                    "startColumn": 4,
-                    "startOffset": 961,
-                    "endColumn": 42,
-                    "endOffset": 999
-                },
-                "from": {
-                    "file": "C:\\Users\\omerrom\\AndroidStudioProjects\\Portabelo_dir\\Portabelo_New\\libs\\SlidingMenu\\library\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
-                    "position": {
-                        "startLine": 3,
-                        "startColumn": 4,
-                        "startOffset": 961,
-                        "endColumn": 42,
-                        "endOffset": 999
-                    }
-                }
-            }
-        ]
     }
 ]
