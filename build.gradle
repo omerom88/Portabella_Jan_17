@@ -27,8 +27,7 @@ android {
   buildTypes {
     release {
       signingConfig signingConfigs.config
-      minifyEnabled true
-      debuggable false
+      minifyEnabled false
       versionNameSuffix '1.0'
     }
   }
