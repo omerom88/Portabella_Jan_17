@@ -20,7 +20,7 @@ android {
     }
   }
   defaultConfig {
-    applicationId "ioio.examples.hello_service"
+    applicationId "com.portabella.app"
   }
   buildToolsVersion "23.0.3"
   compileSdkVersion 19
