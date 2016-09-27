@@ -96,14 +96,14 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:background="@drawable/animation_list_filling_rec"
-        android:layout_gravity="bottom|right" />
+        android:layout_gravity="top|left" />
 
         <ImageView
         android:id="@+id/imageview_animated_menu"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:background="@drawable/animation_list_filling_menu"
-        android:layout_gravity="left|bottom" />
+        android:layout_gravity="top|right" />
 
 
     </FrameLayout>

@@ -1,6 +1,7 @@
 package com.portabella.app.GuitarActivity;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -279,6 +280,7 @@ public class ActivitySwipeDetector implements View.OnTouchListener {
      */
     private static int computeLayout(float y) {
         int meitar = getMeitarByPosition(y);
+        Log.e("meitar: ", "" + meitar);
         int tempMeitar = meitar;
         meitar *= 2;
         if (y > getMiddleOfLayout(mietarsLayouts[tempMeitar])) {
@@ -291,7 +293,11 @@ public class ActivitySwipeDetector implements View.OnTouchListener {
      * returns the proper meitar's number, by the given position.
      */
     private static int getMeitarByPosition(float y) {
+        Log.e("y: ", "" + y);
         for (int i = 0; i < mietarsLayouts.length; i++) {
+            Log.e("i: ", "" + i);
+            Log.e("getBottom: ", "" + mietarsLayouts[i].getBottom());
+            Log.e("getTop: ", "" + mietarsLayouts[i].getTop());
             if (y <= mietarsLayouts[i].getBottom() && y >= mietarsLayouts[i].getTop()) {
                 return i;
             }
