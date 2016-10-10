@@ -21,6 +21,8 @@ android {
   }
   defaultConfig {
     applicationId "com.portabella.app"
+    versionCode 2
+    versionName '1.0'
   }
   buildToolsVersion "23.0.3"
   compileSdkVersion 19
@@ -28,7 +30,7 @@ android {
     release {
       signingConfig signingConfigs.config
       minifyEnabled false
-      versionNameSuffix '1.0'
+      versionNameSuffix '2.0'
     }
   }
   productFlavors {

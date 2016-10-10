@@ -15,20 +15,21 @@ import java.nio.ByteOrder;
 import java.util.Arrays;
 
 /**
+ * This class represent a cord in the guitar.
  * Created by omerrom on 12/07/16.
  */
 public class Cord implements Runnable {
     private Task task;
-    private int index;
-    protected short[] sample;
+    private int index; // the index of this cord.
+    private short[] sample; // the sample of which we make the soung
     private AudioTrack audioTrack;
     private Equalizer equalizer;
-    public final static int DEFAULT_RATE = 44100;
+    public static final int DEFAULT_RATE = 44100;
     private static final int MILI_CONVERTOR = 1000;
-    public static final int MAX_FREQ = 400 * MILI_CONVERTOR;
+    private static final int MAX_FREQ = 400 * MILI_CONVERTOR;
     private int bufferAddPerIteration = 0;
     private int numOfIterations = CordManager.NUM_OF_ITERATIONS;
-    private short minEQLevel, maxEQLevel, bandNumMaxFreq;
+    private short minEQLevel, maxEQLevel, bandNumMaxFreq; // params for the equalizer
     private boolean init;
 
     private static Context context;
@@ -38,12 +39,19 @@ public class Cord implements Runnable {
     private static final int HEADER_SIZE = 44;
 
     static {
+        // creates all the possible Accord's rates of the guitar.
         for (int i = 0; i < RATE_ARRAY.length; i++) {
             RATE_ARRAY[i] = (float) Math.pow(2, i / (float) 12);
         }
     }
 
-
+    /**
+     * Constructor
+     * @param index the index of this cord.
+     * @param context the calling activity
+     * @param wav the resource of the sample
+     * @param numOfIterations the number of iterations for a strumming.
+     */
     public Cord(int index, Context context, int wav, int numOfIterations) {
         Cord.context = context;
         this.task = new Task();
@@ -55,9 +63,11 @@ public class Cord implements Runnable {
                 AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT, minBufferSize,
                 AudioTrack.MODE_STREAM);
         setCord(wav);
-//        task.setAndStart(0, 0, 0);
     }
 
+    /**
+     * calculate the volume for the next iteration.
+     */
     public float calcVolume(float currVolume, float pressure, boolean withIOIO) {
         if (withIOIO) {
             if (pressure == 0.0) {
@@ -73,6 +83,9 @@ public class Cord implements Runnable {
         return (float) Math.log(pressure);
     }
 
+    /**
+     * calculate the pitch for the next iteration.
+     */
     private static int calcPitch(int frat) {
 //        Log.e("pitch: ", "" + (int) (DEFAULT_RATE * RATE_ARRAY[frat]));
         return (int) (DEFAULT_RATE * RATE_ARRAY[frat]);
@@ -98,11 +111,13 @@ public class Cord implements Runnable {
 
     public void stopTrack() {
         if (audioTrack.getPlayState() == AudioTrack.PLAYSTATE_PLAYING) {
-//            audioTrack.stop();
             setVolume(0);
         }
     }
 
+    /**
+     * play the next itration of this cord.
+     */
     private void playIteration(int currIndex, int curSarig, float currVolume) {
         int playbackRate = Cord.calcPitch(GuitarActivity.retSrigim[curSarig] + 1);
         audioTrack.setPlaybackRate(playbackRate);
@@ -113,10 +128,6 @@ public class Cord implements Runnable {
         if (CordManager.isRecording()) {
             new RecordCord(sample, currIndex, currIndex + bufferAddPerIteration, playbackRate, currVolume).run();
         }
-    }
-
-    public int getBufferAddPerIteration() {
-        return bufferAddPerIteration;
     }
 
     private void play(int start) {
@@ -152,6 +163,9 @@ public class Cord implements Runnable {
         task.setAndStart(pressure, velocityY, xPos);
     }
 
+    /**
+     * remove the headers of the byte array of the wav file.
+     */
     private static byte[] removeHeaders(byte[] array) {
         byte[] tempBytes = array.clone();
         array = new byte[tempBytes.length - HEADER_SIZE];
@@ -197,23 +211,11 @@ public class Cord implements Runnable {
         return sample;
     }
 
-    public void cancelTask() {
-        try {
-            task.cancelTask();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public void restartTask() {
-        task.restartThread();
-    }
-
-    public boolean isInit() {
-        return init;
-    }
-
+    /**
+     * this class represent a task of a strumming cord. each time the user swipe on this cord,
+     * the task will start and play the right sound of this cord,
+     * according to all parameters (like pitch, volume etc.).
+     */
     public class Task extends Thread {
         private float pressure = 0f;
         private float velocityY;
@@ -245,22 +247,7 @@ public class Cord implements Runnable {
             while(running) {
                 audioTrack.play();
                 synchronized(this) {
-                    while(!playing) {
-                        try {
-                            if(CordManager.isRecording()) {
-//                                if (!new_task) {
-
-                                lastTimeRunMillis = recordEmptySound(lastTimeRunMillis);
-//                                } else {
-//                                    new_task = false;
-//                                }
-                            }
-//                            lastTimeRunMillis = System.currentTimeMillis();
-                            wait(500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    cordNotPlaying();
                 }
                 if (playing) {
                     new_task = false;
@@ -279,7 +266,7 @@ public class Cord implements Runnable {
                             }
 
                             playIteration(currIndex, index, currVolume * 10);
-                            currIndex += getBufferAddPerIteration();
+                            currIndex += bufferAddPerIteration;
                             currVolume = calcVolume(currVolume, GuitarActivity.retMeitar[index], true);
                             float presh = GuitarActivity.retMeitar[index];
                             if (!BridgPressure(presh, index)) {
@@ -299,6 +286,19 @@ public class Cord implements Runnable {
                 wait(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+        }
+
+        private void cordNotPlaying() {
+            while(!playing) {
+                try {
+                    if(CordManager.isRecording()) {
+                        lastTimeRunMillis = recordEmptySound(lastTimeRunMillis);
+                    }
+                    wait(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -328,6 +328,12 @@ public class Cord implements Runnable {
             return true;
         }
 
+        /**
+         * starts a new task of strumming this cord.
+         * @param pressure the pressure on the phone in the strumming time (for start volume).
+         * @param velocityY the velocity on strumming (for start volume).
+         * @param xPos the position of the strumming on the cord.
+         */
         public void setAndStart(float pressure, float velocityY, float xPos) {
             this.pressure = pressure;
             this.velocityY = velocityY;
@@ -336,6 +342,10 @@ public class Cord implements Runnable {
             resumeThread();
         }
 
+        /**
+         * sets the start volume and eq for the next strumming
+         * @return true if the velocity is highr than the velocity threshold. otherwise, returns false.
+         */
         private boolean setProperties() {
             float normVelocity = Math.abs(velocityY / VELOCITY_NORMALIZE_CONSTANT);
             if (normVelocity > MIN_VELOCITY) {
@@ -351,11 +361,6 @@ public class Cord implements Runnable {
         public void pauseTask() throws InterruptedException {
             stopTrack();
             this.playing = false;
-        }
-
-        public void cancelTask() throws InterruptedException {
-            pauseTask();
-            this.running = false;
         }
 
         /**
@@ -374,11 +379,11 @@ public class Cord implements Runnable {
             notify();
         }
 
-        private void restartThread() {
-            running = true;
-            notify();
-        }
-
+        /**
+         * record an empty sound (in case of not strumming this cord during recording).
+         * @param startTime time since last record.
+         * @return new time since record.
+         */
         private long recordEmptySound(long startTime) {
             long nowTime = System.currentTimeMillis();
             short[] emptySound;
@@ -396,6 +401,9 @@ public class Cord implements Runnable {
         audioTrack.setStereoVolume(volume, volume);
     }
 
+    /**
+     * This class represent a record task for recording this cord. will be played only if the recorder is on.
+     */
     private class RecordCord implements Runnable {
         short[] audioSample;
         int start;
@@ -413,8 +421,10 @@ public class Cord implements Runnable {
 
         @Override
         public void run() {
-                CordManager.writeToBuffer(index, Arrays.copyOfRange(audioSample, start, end), playbackRate, currVolume);
-                CordManager.writeToFile(index);
+            // saves the sounds that has been played to the buffer.
+            CordManager.writeToBuffer(index, Arrays.copyOfRange(audioSample, start, end), playbackRate, currVolume);
+            // writes from the buffer to the file.
+            CordManager.writeToFile(index);
         }
     }
 }

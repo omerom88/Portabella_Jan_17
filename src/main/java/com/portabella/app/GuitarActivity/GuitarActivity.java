@@ -21,7 +21,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.portabella.app.AnimationClass;
 import com.portabella.app.Hardware.HelloIOIOService2;
@@ -36,6 +35,7 @@ import java.util.List;
 
 
 /**
+ * This class is an Activity for playing the guitar.
  * Created by Tomer on 21/08/2016.
  */
 public class GuitarActivity extends Activity {
@@ -44,6 +44,7 @@ public class GuitarActivity extends Activity {
     public static int[] retSrigim = {-1,-1,-1,-1,-1,-1};
     public static LinearLayout baseGuitarLayout;
     public static File recordOutput;
+    private ActivitySwipeDetector activitySwipeDetector;
     public static ImageView mImageViewRecording;
     public static ImageView mImageViewMenu;
 
@@ -67,10 +68,6 @@ public class GuitarActivity extends Activity {
         add(ROCK_NOTES);
     }};
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
 
     @Override
     public void onStart() {
@@ -88,10 +85,7 @@ public class GuitarActivity extends Activity {
             layouts[i] = (LinearLayout) findViewById(NOTES_LAYOUTS[i]);
         }
         //////////////// the gesture  /////////////////
-        SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        int defTheme = SP.getInt(getString(R.string.GuitarActivity_initNotes), 0);
-        CordManager.init(this, getApplicationContext(), ALL_NOTES.get(defTheme));
-        ChooseTheme.setTheme(getBackground(defTheme), ALL_NOTES.get(defTheme), getResources());
+        initTheme();
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
@@ -102,11 +96,38 @@ public class GuitarActivity extends Activity {
         }
 
         ////////    string layouts detector   ///////////
-        final ActivitySwipeDetector activitySwipeDetector = new ActivitySwipeDetector(layouts, this);
+        activitySwipeDetector = new ActivitySwipeDetector(layouts, this);
         baseGuitarLayout.setOnTouchListener(activitySwipeDetector);
 
 
         ///////      rec button     ////////////
+        initRecordingButton();
+
+
+        //////////      menu button     /////////
+        initMenuButton();
+
+        //////// start ioio activity //////////
+        mIntentFilter = new IntentFilter();
+        mIntentFilter.addAction(mBroadcastStringAction);
+        final Intent intent = new Intent(GuitarActivity.this, HelloIOIOService2.class);
+        startService(intent);
+    }
+
+    /**
+     * initialize the theme of this activity.
+     */
+    private void initTheme() {
+        SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        int defTheme = SP.getInt(getString(R.string.GuitarActivity_initNotes), 0);
+        CordManager.init(this, getApplicationContext(), ALL_NOTES.get(defTheme));
+        ChooseTheme.setTheme(getBackground(defTheme), ALL_NOTES.get(defTheme), getResources());
+    }
+
+    /**
+     * initialize the recording button of this activity.
+     */
+    private void initRecordingButton() {
         mImageViewRecording = (ImageView) findViewById(R.id.imageview_animated_recording);
         animationDrawableStartRec = new AnimationClass((AnimationDrawable)mImageViewRecording.getBackground());
         mImageViewRecording.setOnTouchListener(new View.OnTouchListener() {
@@ -141,9 +162,12 @@ public class GuitarActivity extends Activity {
                 return false;
             }
         });
+    }
 
-
-        //////////      menu button     /////////
+    /**
+     * initialize the menu button of this activity.
+     */
+    private void initMenuButton() {
         mImageViewMenu = (ImageView) findViewById(R.id.imageview_animated_menu);
         animationDrawableMenu = new AnimationClass((AnimationDrawable)mImageViewMenu.getBackground());
         mImageViewMenu.setOnTouchListener(new View.OnTouchListener() {
@@ -168,14 +192,11 @@ public class GuitarActivity extends Activity {
                 return false;
             }
         });
-
-        //////// start ioio activity //////////
-        mIntentFilter = new IntentFilter();
-        mIntentFilter.addAction(mBroadcastStringAction);
-        final Intent intent = new Intent(GuitarActivity.this, HelloIOIOService2.class);
-        startService(intent);
     }
 
+    /**
+     * Opens a dialog when a new recording is done for saving the new song.
+     */
     public void openSaveFileDialog() {
         CordManager.pauseAllTasks();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -219,6 +240,9 @@ public class GuitarActivity extends Activity {
         builder.show();
     }
 
+    /**
+     * Opens a dialog when a new recording is done for playing the new song.
+     */
     private void openPlaySongDialog(final String recordName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Do you want to play it now?");

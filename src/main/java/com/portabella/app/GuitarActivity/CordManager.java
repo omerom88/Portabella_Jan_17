@@ -2,25 +2,26 @@ package com.portabella.app.GuitarActivity;
 
 import android.content.Context;
 
-import java.io.File;
-
 import com.portabella.app.Recording.Record;
 
+import java.io.File;
+
 /**
+ * This class represent the manager of all the cords in the guitar. it contains an array of cords
+ * and it controls all of them, including initialize them, strumming them separately and silence them separately.
  * Created by Tomer on 27/07/2016.
  */
 public class CordManager {
 
     public final static int NUM_OF_ITERATIONS = 50;
     public static final int NUM_OF_MEITARS = 6;
-    public static Cord[] cords = new Cord[NUM_OF_MEITARS];
-//    public static int[] REG_NOTES = {0,0,0,0,0,0};
-    private static float width;
-    private static Record record;
+    public static Cord[] cords = new Cord[NUM_OF_MEITARS]; // An array of the cords in the guitar.
+    private static float width; // The width of the phone.
+    private static Record record; // A record instance for recording the cords strumming.
     private static GuitarActivity guitarActivity;
 
-    /* A private Constructor prevents any other
-     * class from instantiating.
+    /**
+     * Initialize for this class.
      */
     public static void init(GuitarActivity guitarActivity, Context context, int[] NOTES){
         CordManager.guitarActivity = guitarActivity;
@@ -36,6 +37,9 @@ public class CordManager {
         return width;
     }
 
+    /**
+     * Pauses all this task's cords.
+     */
     public static void pauseAllTasks() {
         for (int i = 0; i < NUM_OF_MEITARS; i++) {
             if (cords[i] != null) {
@@ -44,6 +48,9 @@ public class CordManager {
         }
     }
 
+    /**
+     * restart a new strumming of the cord with the given index.
+     */
     public static void restartTask(int index, float pressure, float velocityY, float xPos) {
         cords[index].pauseTask();
         cords[index].resume(pressure, velocityY, xPos);
@@ -53,12 +60,18 @@ public class CordManager {
         width = widthLayout;
     }
 
+    /**
+     * Sets a new cords (like when changing theme).
+     */
     public static void setNewCords(int[] notesArray) {
         for (int i = 0; i < NUM_OF_MEITARS; i++) {
             cords[i].setCord(notesArray[i]);
         }
     }
 
+    /**
+     * Starts a new recording for all cords.
+     */
     public static void startRecording() {
         for (int i = 0; i < NUM_OF_MEITARS; i++) {
             record.addSample(i, getSample(i));
@@ -67,6 +80,9 @@ public class CordManager {
         Record.getInstance(guitarActivity).start();
     }
 
+    /**
+     * Stops recording for all cords.
+     */
     public static void stopRecording() {
         record.stop();
     }
@@ -97,19 +113,5 @@ public class CordManager {
 
     public static File saveFile(String fileName) throws OutOfMemoryError{
         return record.saveFile(fileName);
-    }
-
-    public static void restartAllTasks() {
-        for (int i = 0; i < NUM_OF_MEITARS; i++) {
-            if (cords[i].isInit()) {
-                cords[i].restartTask();
-            }
-        }
-    }
-
-    public static void cancelAllTasks() {
-        for (int i = 0; i < NUM_OF_MEITARS; i++) {
-            cords[i].cancelTask();
-        }
     }
 }
