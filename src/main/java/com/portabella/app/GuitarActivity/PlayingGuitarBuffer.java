@@ -19,6 +19,9 @@ public class PlayingGuitarBuffer {
 
     private static final int WRITING_THRESHOLD = 100000;
 
+    /**
+     * Constructor for the class, creates a buffer for one cord with the given index.
+     */
     public PlayingGuitarBuffer(int index, String fileName, String path, short[] sample) {
         buffer = new LinkedList<PlayingSegment>();
         this.outPutAudioFormat = new WavFileFormat(fileName + "_" + index, path, sample);
@@ -54,14 +57,9 @@ public class PlayingGuitarBuffer {
         return outPutAudioFormat.getFile();
     }
 
-    public String getOutPutFileType() {
-        return outPutAudioFormat.getOutPutFileType();
-    }
-
-    public int getBufferSize() {
-        return bufferSize;
-    }
-
+    /**
+     * This class represent on segment of strumming in the guitar for this buffer's cord.
+     */
     public class PlayingSegment {
         short[] shortArray;
         int playbackRate;

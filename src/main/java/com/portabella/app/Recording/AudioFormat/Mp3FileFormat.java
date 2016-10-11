@@ -1,15 +1,15 @@
 package com.portabella.app.Recording.AudioFormat;
 
+import com.portabella.app.GuitarActivity.PlayingGuitarBuffer;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import com.portabella.app.GuitarActivity.PlayingGuitarBuffer;
-
 /**
+ * This class is an MP3 Audio format for the recorder. for this version it is not implemented in the app.
  * Created by Tomer on 14/09/2016.
  */
 public class Mp3FileFormat extends AudioFormat {
@@ -186,11 +186,6 @@ public class Mp3FileFormat extends AudioFormat {
     }
 
     @Override
-    public String getOutPutFileType() {
-        return null;
-    }
-
-    @Override
     public void writeDataToFile(byte[] outputArray) {
 
     }
@@ -198,34 +193,5 @@ public class Mp3FileFormat extends AudioFormat {
     @Override
     public void reWriteHeaders() {
 
-    }
-
-    public static void main(String[] args) {
-        System.out.println("hi :)");
-
-        FileInputStream fileInputStream;
-        File file = new File("C:\\Users\\Tomer\\Desktop\\test.mp3");
-        byte[] bFile = new byte[(int) file.length()];
-
-        try {
-            //convert file into array of bytes
-            fileInputStream = new FileInputStream(file);
-            fileInputStream.read(bFile);
-            fileInputStream.close();
-//
-//            bFile[0] = FIRST_BYTE1;
-//            bFile[1] = SECOND_BYTE1;
-//            bFile[2] = THIRD_BYTE1;
-//            bFile[3] = FIRST_BYTE1;
-//
-//            FileOutputStream fos = new FileOutputStream("C:\\Users\\Tomer\\Desktop\\test.mp3");
-//            fos.write(bFile);
-//            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("hi :)");
     }
 }

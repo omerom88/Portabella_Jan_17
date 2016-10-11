@@ -1,25 +1,23 @@
 package com.portabella.app.Recording.AudioFormat;
 
 import com.portabella.app.GuitarActivity.Cord;
+import com.portabella.app.GuitarActivity.PlayingGuitarBuffer;
 
-import java.io.*;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.List;
 
-import com.portabella.app.GuitarActivity.PlayingGuitarBuffer;
-
 /**
+ * This class is an WMV Audio format for the recorder.
  * Created by Tomer on 15/09/2016.
  */
 public class WavFileFormat extends AudioFormat {
 
     private RandomAccessFile outFile;
-    private boolean removedHeadersFromBuffer = false;
 
     private long chunkSize;
 
@@ -132,11 +130,6 @@ public class WavFileFormat extends AudioFormat {
     }
 
     @Override
-    public String getOutPutFileType() {
-        return WAV;
-    }
-
-    @Override
     public void writeFile(PlayingGuitarBuffer buffer) {
         List<PlayingGuitarBuffer.PlayingSegment> segList = buffer.readFromBuffer();
         for (PlayingGuitarBuffer.PlayingSegment seg : segList) {
@@ -171,47 +164,5 @@ public class WavFileFormat extends AudioFormat {
             bytes[i+1] = (byte) (audioSample >> 8);
         }
         return bytes;
-    }
-
-    public static void main(String[] args) {
-        System.out.println("hi :)");
-        FileInputStream fileInputStream;
-        File file = new File("C:\\Users\\Tomer\\Desktop\\saasas.wav");
-//        File file = new File("C:\\Users\\Tomer\\Desktop\\1.wav");
-        byte[] bFile = new byte[(int) file.length()];
-        byte[] testFile = new byte[(int) file.length()];
-        try {
-            //convert file into array of bytes
-
-            fileInputStream = new FileInputStream(file);
-            fileInputStream.read(bFile);
-            fileInputStream.close();
-//            for (int i = 0; i < bFile.length; i++) {
-//                bFile[i] = (byte) i;
-//            }
-            short[] shortArray = new short[bFile.length / 2];
-            ByteBuffer.wrap(bFile).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(shortArray);
-
-//            PlayingGuitarBuffer buffer = new PlayingGuitarBuffer("test", "C:\\Users\\Tomer\\Desktop\\", shortArray);
-//            buffer.writeToBuffer(shortArray, 0, 0);
-//            buffer.writeToFile();
-
-            fileInputStream = new FileInputStream(new File("C:\\Users\\Tomer\\Desktop\\1474566873337_5.wav"));
-//            fileInputStream = new FileInputStream(new File("C:\\Users\\Tomer\\Desktop\\test.wav"));
-            fileInputStream.read(testFile);
-            fileInputStream.close();
-
-            System.out.println("hi :)");
-//
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        for (int i = 0; i < bFile.length; i++) {
-            if (bFile[i] != testFile[i]) {
-                int x = 5;
-            }
-        }
     }
 }

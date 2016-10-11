@@ -9,6 +9,7 @@ import android.widget.Button;
 import com.portabella.app.R;
 
 /**
+ * This class represent the menu activity of the app.
  * Created by omerrom on 17/09/16.
  */
 public class MenuActivityGif extends Activity {
@@ -27,8 +28,7 @@ public class MenuActivityGif extends Activity {
             public void onClick(View v) {
                 menuView.setBackground(getResources().getDrawable(R.drawable.menu0004));
                 Intent intent = new Intent(MenuActivityGif.this, ChooseTheme.class);
-                int res = 2;
-                startActivityForResult(intent, res);
+                startActivity(intent);
                 finish();
             }
         });
@@ -38,9 +38,8 @@ public class MenuActivityGif extends Activity {
             @Override
             public void onClick(View v) {
                 menuView.setBackground(getResources().getDrawable(R.drawable.menu0002));
-                Intent intent = new Intent(MenuActivityGif.this, MetronomActivity.class);
-                int res = 2;
-                startActivityForResult(intent,res);
+                Intent intent = new Intent(MenuActivityGif.this, MetronomeActivity.class);
+                startActivity(intent);
                 finish();
 
             }
@@ -51,28 +50,9 @@ public class MenuActivityGif extends Activity {
             public void onClick(View v) {
                 menuView.setBackground(getResources().getDrawable(R.drawable.menu0003));
                 Intent intent = new Intent(MenuActivityGif.this, SettingActivity.class);
-                int res = 2;
-                startActivityForResult(intent,res);
+                startActivity(intent);
                 finish();
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK){
-            setResult(Activity.RESULT_OK);
-            finish();
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }

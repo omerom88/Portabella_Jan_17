@@ -5,11 +5,12 @@ import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 /**
+ * This activity is being called from the MainActivity at the start of the app. it is running an
+ * animation and then calls to the Guitar Activity.
  * Created by omerrom on 18/09/16.
  */
 public class LoadingActivity extends Activity
@@ -36,8 +37,7 @@ public class LoadingActivity extends Activity
     }
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
         animationDrawableOpen.start();
         checkIfAnimationOpenDone(animationDrawableOpen, this);
@@ -90,8 +90,7 @@ public class LoadingActivity extends Activity
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
         mediaPlayer.stop();
         mediaPlayer.release();

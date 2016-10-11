@@ -13,13 +13,6 @@ public class MainActivity extends Activity {
     private static final int GUITAR_REQUEST_CODE = 7436862;
     public static final String mBroadcastStringAction = "com.truiton.broadcast.string";
     SlidingMenu s;
-    public static final int RESULT_EXIT = 12345;
-    public static final int RESULT_NEXT = 54321;
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
 
     @Override
     public void onStart() {

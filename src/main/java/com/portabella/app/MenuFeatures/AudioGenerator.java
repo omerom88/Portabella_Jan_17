@@ -1,6 +1,7 @@
 package com.portabella.app.MenuFeatures;
 
 /**
+ * This class is an Audio generator which is used for the metronome.
  * Created by omerrom on 24/09/16.
  */
 import android.media.AudioFormat;

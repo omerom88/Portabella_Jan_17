@@ -14,6 +14,8 @@ import com.portabella.app.GuitarActivity.GuitarActivity;
 import com.portabella.app.R;
 
 /**
+ * This class represent the Setting Activity of the App. every setting option that has been
+ * chosen by the user is saved in the SharedPreferences Object.
  * Created by omerrom on 25/09/16.
  */
 public class SettingActivity extends Activity {

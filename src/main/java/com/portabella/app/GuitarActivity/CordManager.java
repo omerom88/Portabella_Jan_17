@@ -8,7 +8,8 @@ import java.io.File;
 
 /**
  * This class represent the manager of all the cords in the guitar. it contains an array of cords
- * and it controls all of them, including initialize them, strumming them separately and silence them separately.
+ * and it controls all of them, including initialize them, strumming them
+ * separately and silence them separately. This class is a singleton.
  * Created by Tomer on 27/07/2016.
  */
 public class CordManager {

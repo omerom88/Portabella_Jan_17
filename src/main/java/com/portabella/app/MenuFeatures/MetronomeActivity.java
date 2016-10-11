@@ -10,11 +10,12 @@ import android.widget.Button;
 import com.portabella.app.R;
 
 /**
+ * This class is the Metronome Activity of the the App.
  * Created by omerrom on 24/09/16.
  */
 
 
-public class MetronomActivity extends Activity {
+public class MetronomeActivity extends Activity {
 
     public static double bpm = 0;
     public static int beats = 0;
@@ -26,7 +27,6 @@ public class MetronomActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_metronom);
-
 
         Button bmp_70 = (Button)findViewById(R.id.bpm1);
         Button bmp_90 = (Button)findViewById(R.id.bpm2);
@@ -117,20 +117,6 @@ public class MetronomActivity extends Activity {
             }
         });
 
-//        beats_4.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                beats = 4;
-//            }
-//        });
-//
-//        beats_8.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                beats = 8;
-//            }
-//        });
-
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,12 +152,12 @@ public class MetronomActivity extends Activity {
 
     @Override
     protected void onStop() {
-        setResult(2);
+        setResult(Activity.RESULT_OK);
         super.onStop();
     }
     @Override
     protected void onDestroy() {
-        setResult(2);
+        setResult(Activity.RESULT_OK);
         super.onDestroy();
     }
 

@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
+ *
+ * This class represent the player activity for the recorded song.
+ * it is used after the user finished recording a song.
  * Created by Tomer on 02/09/2016.
  */
 public class RecordPlayerActivity extends Activity {
@@ -46,14 +49,7 @@ public class RecordPlayerActivity extends Activity {
 
         mediaPlayer = new MediaPlayer();
         try {
-            // resetting mediaplayer instance to evade problems
             mediaPlayer.reset();
-
-            // In case you run into issues with threading consider new instance like:
-
-            // Tried passing path directly, but kept getting
-            // "Prepare failed.: status=0x1"
-            // so using file descriptor instead
             FileInputStream fis = new FileInputStream(song);
             mediaPlayer.setDataSource(fis.getFD());
             mediaPlayer.prepare();
@@ -61,7 +57,6 @@ public class RecordPlayerActivity extends Activity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         stopButton.setEnabled(false);
         pauseButton.setEnabled(false);
@@ -137,8 +132,7 @@ public class RecordPlayerActivity extends Activity {
     };
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         mediaPlayerInit = false;
         mediaPlayer.stop();
         mediaPlayer.release();

@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This class represent a recorder in the guitar Activity. The recorder holds an array of buffers
+ * (for each cord) and it writes to them when it is on. This class is a singleton.
  * Created by Tomer on 02/09/2016.
  */
 public class Record {
@@ -42,11 +44,18 @@ public class Record {
         return rec;
     }
 
+    /**
+     * Create a new buffer in the start of the recording, by creating a temp file for the cord
+     * with the given index.
+     */
     public void addSample(int index, short[] sample) {
         buffer[index] = new PlayingGuitarBuffer(index, "/" + System.currentTimeMillis(),
                 activity.getFilesDir().getPath(), sample);
     }
 
+    /**
+     * Adds a new data to the buffer of the cord with the given index.
+     */
     public void writeToBuffer(int index, short[] shorts, int playbackRate, float currVolume) {
         buffer[index].writeToBuffer(shorts, playbackRate, currVolume);
     }
@@ -59,6 +68,9 @@ public class Record {
         return buffer[index].calcShortsPerTime(timeInMillis, sample);
     }
 
+    /**
+     * Cancels the recording.
+     */
     public void cancel() {
         for (PlayingGuitarBuffer pgb : buffer) {
             pgb.readFromBuffer();
@@ -67,6 +79,11 @@ public class Record {
         countDownTimer.cancelRec();
     }
 
+    /**
+     * Saves the recording file by mixing all the temp files of this recording.
+     * @throws OutOfMemoryError is there is no enough memory for reading all the temp files (in try outs,
+     * there is more then 2 minutes of recording).
+     */
     public File saveFile(String fileName) throws OutOfMemoryError{
         AudioFormat outPutAudioFormat = null;
         try {
@@ -104,9 +121,12 @@ public class Record {
         return outPutAudioFormat != null ? outPutAudioFormat.getFile() : null;
     }
 
-    public static short[] getColumn(List<ArrayList<Short>> array, int index){
-        short[] column = new short[array.size()]; // Here I assume a rectangular 2D array!
-        for(int i = 0; i < column.length; i++){
+    /**
+     * returns a column with the given index of the given 2-D list.
+     */
+    public static short[] getColumn(List<ArrayList<Short>> array, int index) {
+        short[] column = new short[array.size()];
+        for(int i = 0; i < column.length; i++) {
             ArrayList<Short> list = array.get(i);
             if (list.size() > index) {
                 column[i] = list.get(index);
@@ -115,10 +135,13 @@ public class Record {
         return column;
     }
 
+    /**
+     * mixing the sounds of the array of shorts.
+     */
     private short mixSounds(short[] shortFromAllSamples) {
         float newSample = 0.0f;
-        for(int i = 0; i < shortFromAllSamples.length; i++){
-            newSample += (shortFromAllSamples[i] / 32768.0f);
+        for (short shortSample : shortFromAllSamples) {
+            newSample += (shortSample / 32768.0f);
         }
         newSample *= 0.8;
         // reduce the volume a bit:
@@ -132,6 +155,9 @@ public class Record {
         return (short)(newSample * 32768.0f);
     }
 
+    /**
+     * This class represent an recording options for the recorder. for now, there are only default option for the recorder.
+     */
     private static class RecOptions {
         private long duration = DEFAULT_DURATION; // duration of the record in millis.
         private int numOfLoops = DEFAULT_NUM_OF_LOOPS;
@@ -207,6 +233,9 @@ public class Record {
         return countDownTimer.isRecording();
     }
 
+    /**
+     * This class represent a timer for the recorder. for this version it is not implemented in the app.
+     */
     private static class customCountDownTimer extends CountDownTimer {
 
         private RecOptions op;

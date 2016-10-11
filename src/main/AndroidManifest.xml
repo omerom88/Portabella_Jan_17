@@ -30,7 +30,7 @@
 			android:screenOrientation="landscape">
 		</activity>
 
-		<activity android:label="@string/app_name" android:name=".MenuFeatures.MetronomActivity"
+		<activity android:label="@string/app_name" android:name=".MenuFeatures.MetronomeActivity"
 			android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
 			android:screenOrientation="landscape">
 		</activity>

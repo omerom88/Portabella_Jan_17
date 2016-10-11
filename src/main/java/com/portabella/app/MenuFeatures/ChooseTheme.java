@@ -11,6 +11,7 @@ import com.portabella.app.GuitarActivity.GuitarActivity;
 import com.portabella.app.R;
 
 /**
+ * This activity is used for the chnge theme menu in the app's menu.
  * Created by omerrom on 18/09/16.
  */
 public class ChooseTheme extends Activity {
@@ -59,8 +60,6 @@ public class ChooseTheme extends Activity {
 
     @Override
     public void onBackPressed() {
-        // When the user hits the back button set the resultCode
-        // to Activity.RESULT_CANCELED to indicate a failure
         setResult(Activity.RESULT_CANCELED);
         super.onBackPressed();
     }
