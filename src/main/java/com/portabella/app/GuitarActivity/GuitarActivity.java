@@ -25,7 +25,7 @@ import android.widget.LinearLayout;
 import com.portabella.app.AnimationClass;
 import com.portabella.app.Hardware.HelloIOIOService2;
 import com.portabella.app.MenuFeatures.ChooseTheme;
-import com.portabella.app.MenuFeatures.MenuActivityGif;
+import com.portabella.app.MenuFeatures.MenuActivity;
 import com.portabella.app.R;
 import com.portabella.app.Recording.RecordPlayerActivity;
 
@@ -182,7 +182,7 @@ public class GuitarActivity extends Activity {
                     case MotionEvent.ACTION_UP: {
                         if (animationDrawableMenu.isAnimationFlag()) {
                             animationDrawableMenu.setAnimationFlag(false);
-                            Intent intent = new Intent(GuitarActivity.this, MenuActivityGif.class);
+                            Intent intent = new Intent(GuitarActivity.this, MenuActivity.class);
                             startActivity(intent);
                         }
                         animationDrawableMenu.restartAnimation();

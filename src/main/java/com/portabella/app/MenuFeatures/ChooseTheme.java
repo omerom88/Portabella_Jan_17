@@ -11,7 +11,7 @@ import com.portabella.app.GuitarActivity.GuitarActivity;
 import com.portabella.app.R;
 
 /**
- * This activity is used for the chnge theme menu in the app's menu.
+ * This activity is used for the change theme menu in the app's menu.
  * Created by omerrom on 18/09/16.
  */
 public class ChooseTheme extends Activity {

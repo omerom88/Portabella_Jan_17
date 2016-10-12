@@ -35,7 +35,7 @@
 			android:screenOrientation="landscape">
 		</activity>
 
-        <activity android:label="@string/app_name" android:name=".MenuFeatures.MenuActivityGif"
+        <activity android:label="@string/app_name" android:name=".MenuFeatures.MenuActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape">
         </activity>
