@@ -108,24 +108,4 @@
 
     </FrameLayout>
 
-
 </LinearLayout>
-<!--<Button-->
-<!--android:layout_width="34dp"-->
-<!--android:layout_height="29dp"-->
-<!--android:id="@+id/recButton"-->
-<!--android:background="@drawable/roundbutton" />-->
-
-<!--<ImageView-->
-<!--android:id="@+id/imageview_animation_list_filling"-->
-<!--android:layout_width="wrap_content"-->
-<!--android:layout_height="wrap_content"-->
-<!--android:background="@drawable/animation_list_filling"-->
-    <!--/>-->
-
-<!--<ImageView-->
-<!--android:id="@+id/imageview_animation_list_emptying"-->
-<!--android:layout_width="wrap_content"-->
-<!--android:layout_height="wrap_content"-->
-<!--android:background="@drawable/animation_list_emptying"-->
-    <!--/>-->
